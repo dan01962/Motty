@@ -1,0 +1,81 @@
+SET @cnt= 0;
+SELECT 
+	(@cnt := @cnt + 1) 'cnt',
+
+    DIVISION 'Div',
+    HOME_TEAM 'Home',
+    AWAY_TEAM 'Away',
+    UO2P5 'UO',
+    CONFIDENCE 'Con',
+    '|||' AS '%',
+    case when UO2P5 = 'U' then CONFIDENCE else (1-CONFIDENCE) end 'U',
+    case when UO2P5 = 'O' then CONFIDENCE else (1-CONFIDENCE) end 'O',
+    '|||' AS 'TAR',
+	'=(1/G2)+(((1/G2)-1)*0.05)' AS 'U Ba',
+	'=(1/H2)-(((1/H2)-1)*0.05)' AS 'U La',
+	'=(1/H2)+(((1/H2)-1)*0.05)' AS 'O Ba',
+	'=(1/G2)-(((1/G2)-1)*0.05)' AS 'O La',
+    '|||' AS 'ASK',
+    HOME_TEAM,
+	'=(1/G2)+(((1/G2)-1)*0.05)' AS 'U Ba',
+	'=(1/H2)-(((1/H2)-1)*0.05)' AS 'U La',
+	'=(1/H2)+(((1/H2)-1)*0.05)' AS 'O Ba',
+	'=(1/G2)-(((1/G2)-1)*0.05)' AS 'O La',
+    '|||' AS 'UP%',
+	'=(P2-(1/G2))/ (P2-1)' AS 'U Ba',
+	'=(Q2-(1/H2))/ (1-Q2)' AS 'U La',
+	'=(R2-(1/H2))/ (R2-1)' AS 'O Ba',
+	'=(S2-(1/G2))/ (1-S2)' AS 'O La',
+    '|||' AS 'DO',
+    HOME_TEAM 'Home',
+    (select MIN_STAKE from MARKETS where MARKET = 'UO2P5') AS '£L',
+    '=IF(D2="U",IF(U2>X2,"BACK U","LAY 0"),IF(W2>V2,"BACK O","LAY U"))' AS 'Bet',
+    '=ROUND(IF(D2="U",IF(U2>X2,P2,S2),IF(W2>V2,R2,Q2)),2)' AS 'Odds',
+    '=ROUND(IF(D2="U",IF(U2>X2,U2,X2),IF(W2>V2,W2,V2)),2' AS 'Up',
+    '=ROUND(IF(LEFT(AB2,1)="B", AA2, (AA2/(AC2-1))),2' AS 'Stake',
+    '-' AS 'State',
+    '-' AS 'Comment'
+ FROM MOTSON.PREDICTIONS_UO2P5
+WHERE FIXTURE_DATE >= current_date()
+
+
+UNION
+SELECT 
+	(@cnt := @cnt + 1) 'cnt',
+    DIVISION,
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--',
+    '--'
+FROM MOTSON.PREDICTIONS_UO2P5
+WHERE FIXTURE_DATE >= current_date()
+GROUP BY DIVISION
+ORDER BY 2,3;
